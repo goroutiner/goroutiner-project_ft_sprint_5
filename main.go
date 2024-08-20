@@ -37,8 +37,11 @@ func (t Training) distance() float64 {
 // преодолённая_дистанция_за_тренировку_в_км / время_тренировки_в_часах
 func (t Training) meanSpeed() float64 {
 	// вставьте ваш код ниже
-	meanSpeed := t.distance() / t.Duration.Hours()
-	return meanSpeed
+	if t.Duration.Hours() != 0 {
+		meanSpeed := t.distance() / t.Duration.Hours()
+		return meanSpeed
+	}
+	return 0
 }
 
 // Calories возвращает количество потраченных килокалорий на тренировке.
@@ -106,8 +109,11 @@ type Running struct {
 // Это переопределенный метод Calories() из Training.
 func (r Running) Calories() float64 {
 	// вставьте ваш код ниже
-	calories := (CaloriesMeanSpeedMultiplier * r.meanSpeed() + CaloriesMeanSpeedShift) * r.Weight / MInKm * r.Duration.Hours() * MinInHours
-	return calories
+	if r.Duration.Hours() != 0 {
+		calories := (CaloriesMeanSpeedMultiplier * r.meanSpeed() + CaloriesMeanSpeedShift) * r.Weight / MInKm * r.Duration.Hours() * MinInHours
+		return calories
+	}
+	return 0
 }
 
 // TrainingInfo возвращает структуру InfoMessage с информацией о проведенной тренировке.
@@ -146,8 +152,11 @@ func (w Walking) Calories() float64 {
 	// вставьте ваш код ниже
 	height := w.Height / float64(CmInM) // рост пользователя переведенный в метры 
 	meanSpeed := w.meanSpeed() * KmHInMsec
-	calories := (CaloriesWeightMultiplier * w.Weight + (math.Pow(meanSpeed, 2) / height) * CaloriesSpeedHeightMultiplier * w.Weight) * w.Duration.Hours() * MinInHours
-	return calories
+	if height != 0 {
+		calories := (CaloriesWeightMultiplier * w.Weight + (math.Pow(meanSpeed, 2) / height) * CaloriesSpeedHeightMultiplier * w.Weight) * w.Duration.Hours() * MinInHours
+		return calories
+	}
+	return 0
 }
 
 // TrainingInfo возвращает структуру InfoMessage с информацией о проведенной тренировке.
@@ -184,8 +193,11 @@ type Swimming struct {
 // Это переопределенный метод Calories() из Training.
 func (s Swimming) meanSpeed() float64 {
 	// вставьте ваш код ниже
-	meanSpeed := float64(s.LengthPool) * float64(s.CountPool) / float64(MInKm) / s.Duration.Hours()
-	return meanSpeed
+	if s.Duration.Hours() != 0 {
+		meanSpeed := float64(s.LengthPool) * float64(s.CountPool) / float64(MInKm) / s.Duration.Hours()
+		return meanSpeed
+	}
+	return 0
 }
 
 // Calories возвращает количество калорий, потраченных при плавании.
